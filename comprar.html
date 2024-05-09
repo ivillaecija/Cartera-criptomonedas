@@ -5,8 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comprar crypto</title>
+    <link rel="stylesheet" href="css/comprar.css">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
 </head>
 <body>
+    <!-- Menu -->
+    <div class="contenedorMenu">
+        <div class="menu">
+            <div class="logo"><img src="img/logo.png" alt="Logo"></div>
+            <div class="opciones">
+                <ul>
+                    <li>Comprar</li>
+                    <li>Compras</li>
+                    <li>Estadisticas</li>
+                </ul>
+            </div>
+            <div class="autenticacion">
+                <button>Iniciar sesión</button>
+                <button>Registrarse</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="contenido">
+        <div class="formCompra">
+            <form action="" method="post">
+                <div>
+                    <label for="moneda">SELECCIONAR MONEDA:</label>
+                    <select name="moneda" id="moneda"></select>
+                </div>
+                <div>
+                    <label for="cripto">SELECCIONAR CRIPTOMONEDA:</label>
+                    <select name="criptomoneda" id="criptomoneda"></select>
+                </div>
+                <div>
+
+                </div>
+                <div class="estadisticas"></div>
+            </form>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/comprar.js"></script>
 </body>

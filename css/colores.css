@@ -1,0 +1,16 @@
+:root {
+    /* Verde para fondos */ 
+    --verde: #00cc66;
+
+    /* Azul para texto y botones */
+    --azul: #3366cc;
+    
+    /* Blanco para texto sobre fondos oscuros */
+    --blanco: #ffffff;
+
+    /* Naranja para resaltar */
+    --naranja: #ff9900;
+
+    /* Gris oscuro para bordes y separadores */
+    --gris: #333333;
+}

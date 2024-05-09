@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import 'colores.css';
+
+/* Tipografias */
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Menu */
+.contenedorMenu {
+    border-bottom: 2px solid rgba(238,240,243);
+    display: flex;
+    justify-content: center;
+}
+
+.menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    width: 1200px;
+    padding: 20px;
+    max-width: 100%;
+}
+
+
+.menu .opciones {
+    flex-grow: 1;
+}
+
+.menu ul {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.menu ul li {
+    list-style-type: none;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.menu .logo {
+    height: 100%;
+}
+
+.menu .logo img {
+    height: 100%;
+}
+
+.menu .autenticacion {
+    display: flex;
+    gap: 10px;
+}
+
+.menu .autenticacion button {
+    border-radius: 20px;
+    padding: 12px 0;
+    width: 120px;
+    border: none;
+    transform: 0.3s ease;
+}
+
+.menu .autenticacion button:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.menu .autenticacion button:first-child {
+    color: black;
+    background-color: rgba(238,240,243);
+}
+
+.menu .autenticacion button:last-child {
+    color: white;
+    background-color: var(--verde);
+}
