@@ -15,9 +15,9 @@
             <div class="logo"><img src="img/logo.png" alt="Logo"></div>
             <div class="opciones">
                 <ul>
-                    <li>Comprar</li>
-                    <li>Compras</li>
-                    <li>Estadisticas</li>
+                    <li><a href="">Comprar</a></li>
+                    <li><a href="">Compras</a></li>
+                    <li><a href="">Estadisticas</a></li>
                 </ul>
             </div>
             <div class="autenticacion">
@@ -29,21 +29,32 @@
 
     <!-- Contenido -->
     <div class="contenido">
-        <div class="formCompra">
-            <form action="" method="post">
-                <div>
-                    <label for="moneda">SELECCIONAR MONEDA:</label>
-                    <select name="moneda" id="moneda"></select>
-                </div>
-                <div>
-                    <label for="cripto">SELECCIONAR CRIPTOMONEDA:</label>
-                    <select name="criptomoneda" id="criptomoneda"></select>
-                </div>
-                <div>
-
-                </div>
-                <div class="estadisticas"></div>
-            </form>
+        <div class="contenidoComprar">
+            <div class="imgCripto">
+                
+            </div>
+            <div class="formCompra">
+                <form action="" method="post">
+                    <div>
+                        <label for="moneda">SELECCIONAR MONEDA</label>
+                        <select name="moneda" id="moneda"></select>
+                    </div>
+                    <div>
+                        <label for="cripto">SELECCIONAR CRIPTOMONEDA</label>
+                        <select name="criptomoneda" id="criptomoneda"></select>
+                    </div>
+                    <div>
+    
+                    </div>
+                    <div class="estadisticas">
+                        <h2 class="precio"><span></span><span></span></h2>
+                        <p class="precioAlto"><span></span><span></span></p>
+                        <p class="precioBajo"><span></span><span></span></p>
+                        <p class="variacion"><span></span><span></span></p>
+                        <p class="lastUpdate"><span></span><span></span></p>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
