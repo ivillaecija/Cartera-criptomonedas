@@ -148,23 +148,25 @@ async function cambiarCriptoSelect() {
 
     imgCriptoHtml.innerHTML = "<img src='" + criptoData.ImageUrl + "' alt='Imagen cripto'/>";
 
+    modificarEstadisticas();
+
 }
 
 // Función para obtener el precio de una cripto con una divisa
 async function obtenerPrecioCripto(cripto, divisa) {
     const url = `https://min-api.cryptocompare.com/data/price?fsym=${cripto}&tsyms=${divisa}`;
-    
+
     try {
         const response = await fetch(url);
         const data = await response.json();
         return data[divisa];
     } catch (error) {
         console.error('Error al obtener el precio:', error);
-        return null;
+        return "no se encontraron datos";
     }
 }
 
-// Función para obtener el precio más alto de una cripto hoy
+// Función para obtener el precio más alto de una criptomoneda hoy
 async function obtenerPrecioAlto(cripto, divisa) {
     const apiKey = apikey.obtenerApiKey();
     const url = `https://min-api.cryptocompare.com/data/v2/histoday?fsym=${cripto}&tsym=${divisa}&limit=1&api_key=${apiKey}`;
@@ -180,7 +182,7 @@ async function obtenerPrecioAlto(cripto, divisa) {
         if (response && response.Data && response.Data.Data && response.Data.Data.length > 0) {
             // El primer elemento del array Data.Data contiene la información más reciente
             const todayData = response.Data.Data[0];
-            return todayData.high;
+            return todayData.high; // Devuelve el precio más alto
         } else {
             throw new Error('No se encontraron datos para el día de hoy.');
         }
@@ -190,7 +192,7 @@ async function obtenerPrecioAlto(cripto, divisa) {
     }
 }
 
-// Función para obtener el precio más bajo de una cripto hoy
+// Función para obtener el precio más bajo de una criptomoneda hoy
 async function obtenerPrecioBajo(cripto, divisa) {
     const apiKey = apikey.obtenerApiKey();
     const url = `https://min-api.cryptocompare.com/data/v2/histoday?fsym=${cripto}&tsym=${divisa}&limit=1&api_key=${apiKey}`;
@@ -206,7 +208,7 @@ async function obtenerPrecioBajo(cripto, divisa) {
         if (response && response.Data && response.Data.Data && response.Data.Data.length > 0) {
             // El primer elemento del array Data.Data contiene la información más reciente
             const todayData = response.Data.Data[0];
-            return todayData.low;
+            return todayData.low; // Devuelve el precio más bajo
         } else {
             throw new Error('No se encontraron datos para el día de hoy.');
         }
@@ -216,6 +218,36 @@ async function obtenerPrecioBajo(cripto, divisa) {
     }
 }
 
+// Función para obtener la variación en las últimas 24 horas
+async function obtenerVariacion24h(cripto, divisa) {
+    const apiKey = apikey.obtenerApiKey();
+    const url = `https://min-api.cryptocompare.com/data/v2/histohour?fsym=${cripto}&tsym=${divisa}&limit=24&api_key=${apiKey}`;
+
+    try {
+        const response = await $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json"
+        });
+
+        if (response && response.Data && response.Data.Data && response.Data.Data.length > 0) {
+            // Obtenemos el precio de cierre de la última hora y el precio de cierre de hace 24 horas
+            const datos = response.Data.Data;
+            const precioHace24Horas = datos[0].close;
+            const precioActual = datos[datos.length - 1].close;
+
+            // Calculamos la variación porcentual y la limitamos a dos decimales
+            const variacion = ((precioActual - precioHace24Horas) / precioHace24Horas) * 100;
+            return parseFloat(variacion.toFixed(2));
+        } else {
+            throw new Error('No se encontraron datos suficientes para calcular la variación.');
+        }
+    } catch (error) {
+        console.error('Error al obtener la variación de las últimas 24 horas:', error);
+        return null;
+    }
+}
 
 
 
@@ -226,17 +258,70 @@ async function modificarEstadisticas() {
     let cripto = document.getElementById("criptomoneda").value;
     let h2precioSpan1 = document.querySelector("h2.precio span:first-child");
     let h2precioSpan2 = document.querySelector("h2.precio span:last-child");
-    let pPrecioAlto = document.querySelector("p.precioAlto");
-    let pPrecioBajo = document.querySelector("p.precioBajo");
-    let pvariacion = document.querySelector("p.variacion");
-    let plastUpdate = document.querySelector("p.lastUpdate");
-
+    let pPrecioAltospan1 = document.querySelector("p.precioAlto span:first-child");
+    let pPrecioAltospan2 = document.querySelector("p.precioAlto span:last-child");
+    let pPrecioBajospan1 = document.querySelector("p.precioBajo span:first-child");
+    let pPrecioBajospan2 = document.querySelector("p.precioBajo span:last-child");
+    let pVariacionspan1 = document.querySelector("p.variacion span:first-child");
+    let pVariacionspan2 = document.querySelector("p.variacion span:last-child");
+    let pUpdatespan1 = document.querySelector("p.lastUpdate span:first-child");
+    let pUpdatespan2 = document.querySelector("p.lastUpdate span:last-child");
+    let precioAlto;
+    let precioBajo;
+    let variacion;
+    
+    
     let precio = await obtenerPrecioCripto(cripto, divisa);
-    h2precioSpan1.textContent = "El precio és: ";
-    h2precioSpan2.textContent =  precio + " " + divisa;
 
-    let precioAlto = obtenerPrecioAlto(cripto, divisa);
-    let precioBajo = obtenerPrecioBajo(cripto, divisa);
+    if (precio !== null) {
+        h2precioSpan1.textContent = "El precio és: ";
+        h2precioSpan2.textContent = precio + " " + divisa;
+    }
+
+
+
+    h2precioSpan1.textContent = "El precio és: ";
+    h2precioSpan2.textContent = precio + " " + divisa;
+
+    try {
+        // Utilizamos Promise.all para esperar a que ambas promesas se resuelvan
+        [precioAlto, precioBajo] = await Promise.all([
+            obtenerPrecioAlto(cripto, divisa),
+            obtenerPrecioBajo(cripto, divisa)
+        ]);
+        pPrecioAltospan1.textContent = "Precio mas alto del dia: ";
+        pPrecioBajospan1.textContent = "Precio mas bajo del dia: ";
+
+        if (precioAlto !== null) {
+            pPrecioAltospan2.textContent = precioAlto + divisa;
+        }
+        else {
+            pPrecioAltospan2.textContent = "-";
+        }
+
+        if (precioBajo !== null) {
+            pPrecioBajospan2.textContent = precioBajo + divisa;
+        }
+        else {
+            pPrecioBajospan2.textContent = "-";
+        }
+
+    } catch (error) {
+        console.error("Ocurrió un error al obtener los precios:", error);
+    }
+
+    variacion = await obtenerVariacion24h(cripto, divisa);
+    pVariacionspan1.textContent = "% Variación últimas 24 horas: ";
+
+    if (variacion !== null) {
+        pVariacionspan2.textContent = variacion + "%";
+    }
+    else {
+        pVariacionspan2.textContent = "-";
+    }
+
+    pUpdatespan1.textContent = "Ultima actualización: ";
+    pUpdatespan2.textContent = "Justo ahora";
 
 }
 
@@ -279,7 +364,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     agregarCriptosYDivisasSelect(criptos, divisas);
     modificarEstadisticas();
     selectCriptos.addEventListener("change", cambiarCriptoSelect);
-    selectDivisas.addEventListener("change", function() {
+    selectDivisas.addEventListener("change", function () {
         modificarEstadisticas();
     });
+
+    // Actualizar las estadísticas cada 5 segundos
+    setInterval(modificarEstadisticas, 5000);
 });
+
+
+// Añadir divisa al placeholder de cantidad
+$('#moneda').change(function() {
+    var selectedCurrency = $(this).val();
+    $('#cantidad').attr('placeholder', 'Cantidad en ' + selectedCurrency);
+});
+

@@ -101,19 +101,19 @@ body {
     justify-content: center;
     align-items: center;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 100px;
     background-color: white;
     padding: 20px;
     border-radius: 4px;
+    border: 3px solid;
 }
 
 .contenidoComprar {
     display: flex;
-    gap: 20px;
     justify-content: center;
     align-items: flex-start;
     width: 100%;
-    min-height: 500px;
+    height: 500px;
 }
 
 .imgCripto {
@@ -123,10 +123,11 @@ body {
     align-items: center;
     max-width: 50%;
     flex-grow: 1;
+    height: 100%;
 }
 
 .imgCripto img {
-    max-width: 100%;
+    height: 80%;
 }
 
 .formCompra {
@@ -151,7 +152,7 @@ body {
     gap: 8px;
 }
 
-select {
+select, input {
     height: 30px;
 }
 
@@ -161,4 +162,15 @@ select {
 
 .estadisticas p span:first-child {
     font-weight: normal;
+}
+
+.estadisticas p span:last-child {
+    font-weight: bold;
+}
+
+.estadisticas h2, 
+.estadisticas p,
+.estadisticas span {
+    margin: 8px 0;
+    line-height: 1;
 }
