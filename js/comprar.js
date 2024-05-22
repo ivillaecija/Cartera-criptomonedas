@@ -1,3 +1,7 @@
+// Clave de la API de Exchange Rate
+const exchangeRateApiKey = '45c4d82bc8fb1aac154e10f7';
+
+// Clave de la API de cryptocompare
 var apikey = (function () {
     var apikey = "38f6fe89b061754d4a174474fd82af2a8c6ba01758f0c28c4309ec53c8588696";
 
@@ -269,8 +273,8 @@ async function modificarEstadisticas() {
     let precioAlto;
     let precioBajo;
     let variacion;
-    
-    
+
+
     let precio = await obtenerPrecioCripto(cripto, divisa);
 
     if (precio !== null) {
@@ -323,10 +327,11 @@ async function modificarEstadisticas() {
     pUpdatespan1.textContent = "Ultima actualización: ";
     pUpdatespan2.textContent = "Justo ahora";
 
+    // Actualizar el boton de compra en caso de que el usuario se hay logeado o haya cerrado sesión
+    actualizarBotonCompra();
 }
 
 
-// Obtener precio: https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,JPY,EUR,GBP,AUD,CAD,CHF,CNY,SEK,NZD
 
 // Función para obtener divisas de la base de datos
 async function obtenerDivisasBBDD() {
@@ -352,6 +357,113 @@ async function obtenerDivisasBBDD() {
 }
 
 
+
+// Añadir divisa al placeholder de cantidad
+$('#moneda').change(function () {
+    var selectedCurrency = $(this).val();
+    $('#cantidad').attr('placeholder', 'Cantidad en ' + selectedCurrency);
+});
+
+
+
+// Función para bloquar la compra si el usuario no esta logeado
+function actualizarBotonCompra() {
+    let usuario = localStorage.getItem("logeado");
+    let botonCompra = document.getElementById("comprarCripto");
+    if (usuario !== null) {
+        if (usuario !== "yes") {
+            botonCompra.textContent = "Inicia sesión para comprar";
+            if (!botonCompra.classList.contains("bloqueado")) {
+                botonCompra.classList.add("bloqueado");
+            }        
+        }
+        else {
+            botonCompra.textContent = "Comprar";
+            if (botonCompra.classList.contains("bloqueado")) {
+                botonCompra.classList.remove("bloqueado");
+            }
+        }
+    }
+    else {
+        botonCompra.textContent = "Inicia sesión para comprar";
+        if (!botonCompra.classList.contains("bloqueado")) {
+            botonCompra.classList.add("bloqueado");
+        }
+    }
+}
+
+
+// Función para obtener la tasa de cambio entre dos divisas
+async function obtenerTasaCambio(fromCurrency, toCurrency) {
+    const url = `https://v6.exchangerate-api.com/v6/${exchangeRateApiKey}/pair/${fromCurrency}/${toCurrency}`;
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.result === 'success') {
+            return data.conversion_rate;
+        } else {
+            throw new Error('Error al obtener la tasa de cambio');
+        }
+    } catch (error) {
+        console.error('Error al obtener la tasa de cambio:', error);
+        return null;
+    }
+}
+
+// Función para convertir la cantidad de una divisa a otra
+async function convertirDivisa(fromCurrency, toCurrency, amount) {
+    const tasaCambio = await obtenerTasaCambio(fromCurrency, toCurrency);
+    if (tasaCambio) {
+        return amount * tasaCambio;
+    } else {
+        return null;
+    }
+}
+
+// Función para manejar la compra
+async function comprar() {
+    // Obtener la cantidad y la divisa seleccionada
+    let cantidadInput = document.getElementById("cantidad").value;
+    let cantidad = parseFloat(cantidadInput.replace(',', '.')); // Aceptar tanto comas como puntos decimales
+    let divisa = document.getElementById("moneda").value;
+
+    if (isNaN(cantidad) || cantidad <= 0) {
+        alert('Por favor, introduce una cantidad válida.');
+        return;
+    }
+    
+    // Convertir la cantidad de la divisa seleccionada a euros
+    const cantidadEnEuros = await convertirDivisa(divisa, 'EUR', cantidad);
+
+    if (cantidadEnEuros === null) {
+        alert('No se pudo obtener la tasa de cambio. Inténtalo de nuevo más tarde.');
+        return;
+    }
+
+    // Calcular el equivalente de 10 euros en la divisa seleccionada
+    const equivalente10Euros = await convertirDivisa('EUR', divisa, 10);
+
+    if (equivalente10Euros === null) {
+        alert('No se pudo obtener la tasa de cambio para calcular el valor mínimo. Inténtalo de nuevo más tarde.');
+        return;
+    }
+
+    // Verificar si la cantidad en euros es menor que 10
+    if (cantidadEnEuros < 10) {
+        // Mostrar un alert indicando la cantidad mínima permitida
+        alert(`La cantidad mínima para comprar es de ${equivalente10Euros.toFixed(2)} ${divisa}.`);
+        return;
+    }
+
+    // Continuar con el proceso de compra
+    alert('Compra realizada con éxito.');
+}
+
+// Asignar la función al botón de compra
+document.getElementById("comprarCripto").addEventListener("click", comprar);
+
+// Lo que se ejecuta al cargar
 document.addEventListener("DOMContentLoaded", async function () {
     // Añadir criptos del top 30 en caso de que no esten en la base de datos
     await agregarCriptosBBDD();
@@ -370,12 +482,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Actualizar las estadísticas cada 5 segundos
     setInterval(modificarEstadisticas, 5000);
+
+    // Bloquear compra si el usuario no esta logeado
+    actualizarBotonCompra();
+
+    // Añadir evento compra
+    let formularioCompra = document.getElementById("formularioCompra");
+    formularioCompra.addEventListener("submit", function(event) {
+        event.preventDefault();
+        comprar();
+    });
 });
-
-
-// Añadir divisa al placeholder de cantidad
-$('#moneda').change(function() {
-    var selectedCurrency = $(this).val();
-    $('#cantidad').attr('placeholder', 'Cantidad en ' + selectedCurrency);
-});
-

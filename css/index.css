@@ -106,7 +106,7 @@ body {
     margin: auto;
     margin-top: 100px;
     background-color: white;
-    padding: 20px;
+    padding: 50px 20px;
     border-radius: 4px;
     border: 3px solid;
 }
@@ -235,4 +235,33 @@ select, input {
 
 .noVisible {
     display: none;
+}
+
+
+#comprarCripto {
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 0;
+    border-radius: 8px;
+    background-color: var(--verde);
+    border: none;
+    font-size: 22px;
+}
+
+#comprarCripto:hover {
+    cursor: pointer;
+    border: 2px solid black;
+}
+
+.bloqueado {
+    pointer-events: none;
+    background-color: rgb(0, 90, 0) !important;
+    color: white;
+}
+
+.cantidad {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }

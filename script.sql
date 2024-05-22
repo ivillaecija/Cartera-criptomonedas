@@ -61,6 +61,5 @@ INSERT INTO Currency (CurrencyName, Code, CurrencyNumber) VALUES
     ('Dólar Australiano', 'AUD', 36),
     ('Dólar Canadiense', 'CAD', 124),
     ('Franco Suizo', 'CHF', 756),
-    ('Yuan Chino', 'CNY', 156),
     ('Corona Sueca', 'SEK', 752),
     ('Dólar Neozelandés', 'NZD', 554);
