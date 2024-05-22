@@ -375,7 +375,7 @@ function actualizarBotonCompra() {
             botonCompra.textContent = "Inicia sesión para comprar";
             if (!botonCompra.classList.contains("bloqueado")) {
                 botonCompra.classList.add("bloqueado");
-            }        
+            }
         }
         else {
             botonCompra.textContent = "Comprar";
@@ -396,7 +396,7 @@ function actualizarBotonCompra() {
 // Función para obtener la tasa de cambio entre dos divisas
 async function obtenerTasaCambio(fromCurrency, toCurrency) {
     const url = `https://v6.exchangerate-api.com/v6/${exchangeRateApiKey}/pair/${fromCurrency}/${toCurrency}`;
-    
+
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -428,11 +428,12 @@ async function comprar() {
     let cantidad = parseFloat(cantidadInput.replace(',', '.')); // Aceptar tanto comas como puntos decimales
     let divisa = document.getElementById("moneda").value;
 
-    if (isNaN(cantidad) || cantidad <= 0) {
+    // Validar la cantidad
+    if (isNaN(cantidad) || !/^\d+(\.\d+)?$/.test(cantidadInput.replace(',', '.')) || cantidad <= 0) {
         alert('Por favor, introduce una cantidad válida.');
         return;
     }
-    
+
     // Convertir la cantidad de la divisa seleccionada a euros
     const cantidadEnEuros = await convertirDivisa(divisa, 'EUR', cantidad);
 
@@ -456,12 +457,56 @@ async function comprar() {
         return;
     }
 
-    // Continuar con el proceso de compra
-    alert('Compra realizada con éxito.');
+    // Confirmar Compra
+    confirmarCompra();
 }
 
-// Asignar la función al botón de compra
-document.getElementById("comprarCripto").addEventListener("click", comprar);
+
+async function confirmarCompra() {
+    // Obtener el usuario del localStorage
+    const usuario = localStorage.getItem("usuario");
+
+    // Obtener los valores necesarios del formulario
+    const cantidadInput = document.getElementById("cantidad").value;
+    const cantidad = parseFloat(cantidadInput.replace(',', '.')); // Aceptar tanto comas como puntos decimales
+    const divisa = document.getElementById("moneda").value;
+    const cripto = document.getElementById("criptomoneda").value;
+
+    // Obtener el precio de la cripto en la divisa seleccionada
+    const precioCripto = await obtenerPrecioCripto(cripto, divisa);
+    let cantidadCripto;
+    if (precioCripto !== null) {
+        cantidadCripto = (cantidad / precioCripto).toFixed(8); // Calcular la cantidad de cripto
+    }
+
+    // Realizar la solicitud al servidor
+    try {
+        const response = await fetch("backend/addPurchase.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                usuario: usuario,
+                cripto: cripto,
+                divisa: divisa,
+                cantidad_divisa: cantidad, // Cambiar el nombre del parámetro a cantidad_divisa
+                cantidad_cripto: cantidadCripto // Agregar cantidad_cripto con el mismo valor de cantidad
+            })
+        });
+
+        if (response.ok) {
+            alert('Compra realizada con éxito.');
+        } else {
+            alert('Error al realizar la compra.');
+        }
+    } catch (error) {
+        alert('Error al realizar la compra:', error);
+    }
+}
+
+
+
 
 // Lo que se ejecuta al cargar
 document.addEventListener("DOMContentLoaded", async function () {
@@ -488,8 +533,36 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Añadir evento compra
     let formularioCompra = document.getElementById("formularioCompra");
-    formularioCompra.addEventListener("submit", function(event) {
+    formularioCompra.addEventListener("submit", function (event) {
         event.preventDefault();
         comprar();
     });
+
+    // Evento para actualizar la cantidad de cripto al escribir en el input de cantidad
+    document.getElementById('cantidad').addEventListener('input', async function () {
+        const cantidadInput = this.value;
+        const cantidad = parseFloat(cantidadInput.replace(',', '.')); // Aceptar tanto comas como puntos decimales
+        const divisa = document.getElementById('moneda').value;
+        const cripto = document.getElementById('criptomoneda').value;
+        const cantidadDisplay = document.querySelector('.cantidad p:last-child');
+
+        // Validar la cantidad ingresada
+        if (isNaN(cantidad) || !/^\d+(\.\d+)?$/.test(cantidadInput.replace(',', '.')) || cantidad <= 0) {
+            cantidadDisplay.textContent = 'Error: Cantidad no válida';
+            return;
+        }
+
+        // Obtener el precio de la cripto en la divisa seleccionada
+        const precioCripto = await obtenerPrecioCripto(cripto, divisa);
+
+        if (precioCripto !== null) {
+            const cantidadCripto = (cantidad / precioCripto).toFixed(8); // Calcular la cantidad de cripto
+            cantidadDisplay.textContent = `${cantidadCripto} ${cripto}`;
+        } else {
+            cantidadDisplay.textContent = 'Error al obtener el precio de la criptomoneda';
+        }
+    });
+
 });
+
+
