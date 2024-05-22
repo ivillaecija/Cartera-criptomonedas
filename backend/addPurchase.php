@@ -14,8 +14,6 @@ if(isset($data->usuario, $data->cripto, $data->divisa, $data->cantidad_divisa, $
     $cantidad_divisa = $data->cantidad_divisa;
     $cantidad_cripto = $data->cantidad_cripto;
 
-    echo "Data obtenida: $usuario, $cripto, $divisa, $cantidad_divisa, $cantidad_cripto";
-
     // Obtener el ID de usuario
     $stmt_user = $conn->prepare("SELECT User_ID FROM User WHERE Email = ?");
     $stmt_user->bind_param("s", $usuario);
@@ -74,13 +72,12 @@ if(isset($data->usuario, $data->cripto, $data->divisa, $data->cantidad_divisa, $
     $result_check_wallet = $stmt_check_wallet->get_result();
 
     if ($result_check_wallet->num_rows > 0) {
-        echo "Ya existe la wallet";
         // La moneda ya existe en la billetera del usuario, actualizar cantidad
         $row_check_wallet = $result_check_wallet->fetch_assoc();
-        $cantidad_cripto += $row_check_wallet['Quantity']; // Sumar la cantidad actual con la nueva
+        $cantidad_cripto_update = $row_check_wallet['Quantity'] + $cantidad_cripto; // Sumar la cantidad actual con la nueva
         $stmt_check_wallet->close();
         $stmt_update_wallet = $conn->prepare("UPDATE Wallet SET Quantity = ? WHERE User_ID = ? AND Coin_ID = ?");
-        $stmt_update_wallet->bind_param("dii", $cantidad_cripto, $user_id, $crypto_id);
+        $stmt_update_wallet->bind_param("dii", $cantidad_cripto_update, $user_id, $crypto_id);
         $stmt_update_wallet->execute();
         $stmt_update_wallet->close();
     } else {
