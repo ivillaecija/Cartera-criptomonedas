@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+</head>
+<body>
+    <div class="contenido noVisible">
+        <div class="contenedor">
+            <div class="logo"><a href="index.html"><img src="img/logo.png" alt="Logo"></a></div>
+            <div class="formulario">
+                <h1>Inicio de sesión</h1>
+                <p class="campoError noVisible"></p>
+                <form action="" method="post" id="formularioLogin">
+                    <div class="campo">
+                        <label for="correo">Correo Electrónico:</label>
+                        <input type="text" name="correo" id="correo" placeholder="Introduce tu correo electrónico en el formato correspondiente, ej: name@gmail.com">
+                    </div>
+                    <div class="campo">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" name="password" id="password" placeholder="Entre 8 y 12 carácteres y contener al menos 1 número, mayúscula, minúscula y símbolo">
+                    </div>
+                    <div class="campo botones">
+                        <button type="submit">Iniciar sesión</button>
+                        <button type="reset">Reestablecer formulario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <p>No tienes una cuenta creada? <a href="registro.html">Crea una</a></p>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

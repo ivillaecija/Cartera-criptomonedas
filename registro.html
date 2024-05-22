@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+</head>
+<body>
+    <div class="contenido noVisible">
+        <div class="contenedor">
+            <div class="logo"><a href="index.html"><img src="img/logo.png" alt="Logo"></a></div>
+            <div class="formulario">
+                <h1>Registro</h1>
+                <form action="" method="post" id="formularioRegistro">
+                    <div class="campo">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" id="nombre" placeholder="Introduce tu nombre">
+                        <p class="campoError noVisible"></p>
+                    </div>
+                    <div class="campo">
+                        <label for="apellidos">Apellidos:</label>
+                        <input type="text" name="apellidos" id="apellidos" placeholder="Introduce tus apellidos">
+                        <p class="campoError noVisible"></p>
+                    </div>
+                    <div class="campo">
+                        <label for="correo">Correo Electrónico:</label>
+                        <input type="text" name="correo" id="correo" placeholder="Introduce tu correo electrónico en el formato correspondiente, ej: name@gmail.com">
+                        <p class="campoError noVisible"></p>
+                    </div>
+                    <div class="campo">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" name="password" id="password" placeholder="Mínimo 8 carácteres y contener al menos 1 número, mayúscula, minúscula y símbolo">
+                        <p class="campoError noVisible"></p>
+                    </div>
+                    <div class="campo">
+                        <label for="passwordConfirm">Confirmar Contraseña:</label>
+                        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirme la contraseña">
+                        <p class="campoError noVisible"></p>
+                    </div>
+                    <div class="campo botones">
+                        <button type="submit">Registrarse</button>
+                        <button type="reset">Reestablecer formulario</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <p>Ya tienes una cuenta creada? <a href="login.html">Inicia sesión</a></p>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/registro.js"></script>
+</body>
+</html>

@@ -71,25 +71,28 @@ body {
     gap: 10px;
 }
 
-.menu .autenticacion button {
+.menu .autenticacion a {
     border-radius: 20px;
     padding: 12px 0;
     width: 120px;
     border: none;
     transform: 0.3s ease;
+    text-decoration: none;
+    text-align: center;
 }
 
-.menu .autenticacion button:hover {
+.menu .autenticacion a:hover {
     cursor: pointer;
     font-weight: bold;
+    border: 1px solid black;
 }
 
-.menu .autenticacion button:first-child {
+.menu .autenticacion a:first-child {
     color: black;
     background-color: rgba(238,240,243);
 }
 
-.menu .autenticacion button:last-child {
+.menu .autenticacion a:last-child {
     color: white;
     background-color: var(--verde);
 }
@@ -173,4 +176,63 @@ select, input {
 .estadisticas span {
     margin: 8px 0;
     line-height: 1;
+}
+
+.contenidoComprar > div {
+    width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+    .contenido {
+        margin-top: 30px;
+    }
+
+    .contenidoComprar {
+        flex-direction: column;
+        height: max-content;
+    }
+}
+
+.autenticacion:has(.usuario) {
+    flex-direction: column;
+    position: relative;
+    padding: 0 50px;
+}
+
+.usuario {
+    width: 100%;
+    text-align: center;
+}
+
+.usuarioInfo {
+    position: absolute;
+    background-color: white;
+    padding: 30px 0;
+    width: 100%;
+    left: 0%;
+    top: 100%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.usuarioInfo button {
+    background-color: transparent;
+    border: none;
+    text-transform: uppercase;
+}
+
+.usuarioInfo button:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.usuario p:hover {
+    cursor: default;
+}
+
+.noVisible {
+    display: none;
 }

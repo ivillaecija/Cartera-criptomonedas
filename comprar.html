@@ -15,14 +15,13 @@
             <div class="logo"><img src="img/logo.png" alt="Logo"></div>
             <div class="opciones">
                 <ul>
-                    <li><a href="">Comprar</a></li>
-                    <li><a href="">Compras</a></li>
-                    <li><a href="">Estadisticas</a></li>
+                    <li><a href="comprar.html">Comprar</a></li>
+                    <li><a href="">Cartera</a></li>
                 </ul>
             </div>
-            <div class="autenticacion">
-                <button>Iniciar sesión</button>
-                <button>Registrarse</button>
+            <div class="autenticacion noVisible">
+                <a href="login.html">Iniciar sesión</a>
+                <a href="registro.html">Registrarse</a>
             </div>
         </div>
     </div>
@@ -32,7 +31,7 @@
         <div class="contenidoComprar">
             <div class="imgCripto"></div>
             <div class="formCompra">
-                <form action="" method="post">
+                <form action="" method="post" id="formularioRegistro">
                     <div>
                         <label for="moneda">SELECCIONAR MONEDA</label>
                         <select name="moneda" id="moneda"></select>
@@ -58,5 +57,6 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="js/comprar.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 </html>
