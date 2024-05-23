@@ -24,10 +24,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
+    height: 50px;
     width: 1200px;
     padding: 20px;
     max-width: 100%;
+    gap: 30px;
 }
 
 
@@ -37,9 +38,10 @@ body {
 
 .menu ul {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     padding: 0 !important;
     margin: 0 !important;
+    gap: 30px;
 }
 
 .menu ul li {
@@ -64,6 +66,7 @@ body {
 
 .menu .logo img {
     height: 100%;
+    max-height: 70px;
 }
 
 .menu .autenticacion {
@@ -97,9 +100,28 @@ body {
     background-color: var(--verde);
 }
 
+
+@media screen and (max-width: 600px) {
+    .menu {
+        flex-wrap: wrap;
+        height: auto;
+    }
+    
+    .menu .logo {
+        width: 100%;
+        height: max-content;
+        display: flex;
+        justify-content: center;
+    }
+
+}
+
+
+/**/
+
 .contenido {
     width: 1200px;
-    max-width: 90%;
+    max-width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -131,6 +153,7 @@ body {
 
 .imgCripto img {
     height: 80%;
+    max-height: 300px;
 }
 
 .formCompra {
@@ -196,7 +219,7 @@ select, input {
 .autenticacion:has(.usuario) {
     flex-direction: column;
     position: relative;
-    padding: 0 50px;
+    padding: 0 0 0 50px;
 }
 
 .usuario {
@@ -214,7 +237,7 @@ select, input {
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -269,3 +292,5 @@ select, input {
 .cantidad p {
     font-weight: bold;
 }
+
+

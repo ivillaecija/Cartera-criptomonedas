@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartera</title>
+    <link rel="stylesheet" href="css/cartera.css">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Menu -->
+    <div class="contenedorMenu">
+        <div class="menu">
+            <div class="logo"><img src="img/logo.png" alt="Logo"></div>
+            <div class="opciones">
+                <ul>
+                    <li><a href="comprar.html">Comprar</a></li>
+                    <li><a href="cartera.html">Cartera</a></li>
+                </ul>
+            </div>
+            <div class="autenticacion noVisible">
+                <a href="login.html">Iniciar sesión</a>
+                <a href="registro.html">Registrarse</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="contenidoCartera">
+        <div class='divisa'><div><p>Divisa: </p><select name='criptoCartera' id='criptoCartera'></select></div></div>
+        <div class="cartera"></div>
+        <div class="carteraMovil"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="js/cartera.js"></script>
+    <script src="js/menu.js"></script>
+</body>
+</html>

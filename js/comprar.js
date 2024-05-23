@@ -1,5 +1,5 @@
 // Clave de la API de Exchange Rate
-const exchangeRateApiKey = '45c4d82bc8fb1aac154e10f7';
+const exchangeRateApiKey = 'ab893a0f4d2c8529bf5c3a6e';
 
 // Clave de la API de cryptocompare
 var apikey = (function () {
@@ -148,7 +148,6 @@ async function cambiarCriptoSelect() {
     let cripto = select.value;
     let criptoData = await obtenerCriptoEspecifica(cripto);
     criptoData = criptoData[0];
-    console.log(criptoData.ImageUrl);
 
     imgCriptoHtml.innerHTML = "<img src='" + criptoData.ImageUrl + "' alt='Imagen cripto'/>";
 
@@ -257,7 +256,6 @@ async function obtenerVariacion24h(cripto, divisa) {
 
 // Función para modificar las estadisticas de la crypto actual en el HTML
 async function modificarEstadisticas() {
-    console.log("Modificando estadisticas...");
     let divisa = document.getElementById("moneda").value;
     let cripto = document.getElementById("criptomoneda").value;
     let h2precioSpan1 = document.querySelector("h2.precio span:first-child");
